@@ -8,9 +8,11 @@ import {
 } from 'reactstrap';
 
 const App = () => {
+  const [person, setPerson] = useState([]);
+  console.log(`top of app`, person);
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
-  const [person, setPerson] = useState([]);
+
 
   // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a
   // side effect in a component, you want to think about which state and/or props it should
@@ -19,9 +21,9 @@ const App = () => {
     axios
     .get(`https://swapi.co/api/people/`)
     .then(res =>{
-      console.log('this ones data: ', res.data.results);
+      console.log('this ones data: ', res.data);
       setPerson(res.data.results);
-      console.log("the person is being logged here: ",setPerson);
+    //  console.log("the person is being logged here: ", person);
     })
     .catch(err=>{
       console.log(`you goofed: `,err);
@@ -31,11 +33,14 @@ const App = () => {
   return (
     <div className="App">
       <h1 className="Header">React Wars</h1>
-      <Card>
-        <CardTitle>Hello my name is: {}</CardTitle>
-        <CardText></CardText>
-        <CardText></CardText>
-      </Card>
+      {person.map((ppl, i)=>{
+        ppl[i] && <Card>
+         <CardTitle>Hello my name is: {ppl[i].name}</CardTitle>
+         <CardText>I weigh: {ppl[i].mass}</CardText>
+         <CardText>I was born: {ppl[i].birth_year}</CardText>
+       </Card>
+      })
+        }
     </div>
   );
 }
